@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/**
+ * @author utsav
+ *
+ */
+
 public class AssociationRuleMiner {
 	//TODO: instead of csv string use HashSet as key for all hashmaps
 	private String[][] dataset;
@@ -16,10 +21,29 @@ public class AssociationRuleMiner {
 	ArrayList<HashMap<String, Integer>> Lk = new ArrayList<HashMap<String, Integer>>();
 	
 	
-	public AssociationRuleMiner(String[][] dataset, int minSup) {
+	/**
+	 * @param dataset an n x n matrix with each cell containing an item. Do not include headers or row ids 
+	 * @param minSup the minimum support eg .30 means 30% to be used
+	 */
+	public AssociationRuleMiner(String[][] dataset, double minSup) {
 		this.dataset = dataset;
-		this.minSup = minSup;
+		this.minSup = (int) (minSup*dataset.length);
 	}
+	
+	/**
+	 * Mines association rules by first computing the frequentItemSets
+	 * and then generating the rules
+	 * @return an array list of AssociationRules
+	 */
+	public ArrayList<AssociationRule> mine() {		
+		ArrayList<HashMap<String, Integer>>  frequentItemSets = generateFrequentItemSet();
+		ArrayList<AssociationRule> associationRules = generateAssociationRules(frequentItemSets);
+		return associationRules;
+	}
+
+	/**
+	 * @return Array List of the frequent item set generated from the dataset
+	 */
 	public ArrayList<HashMap<String, Integer>> generateFrequentItemSet(){
 //		MyUtils.println("printing l1");
 		HashMap<String, Integer> c = generateC1();
@@ -38,11 +62,11 @@ public class AssociationRuleMiner {
 		}
 		return Lk;
 	}
-	public void mine() {		
-		ArrayList<HashMap<String, Integer>>  frequentItemSets = generateFrequentItemSet();
-		MyUtils.println(generateAssociationRules(frequentItemSets).toString());
-	}
 	
+	/**
+	 * @param frequentItemSets
+	 * @return an array list of AssociationRules
+	 */
 	private ArrayList<AssociationRule> generateAssociationRules(ArrayList<HashMap<String, Integer>> frequentItemSets) {
 		ArrayList<AssociationRule> rules = new ArrayList<AssociationRule>();
 			for(int i = 1; i < frequentItemSets.size(); i++){
@@ -71,7 +95,10 @@ public class AssociationRuleMiner {
 			return rules;
 	}
 	
-	
+	/**
+	 * @param Set of Items
+	 * @return support value of the set in the dataset
+	 */
 	private int findSupportOf(HashSet<String> s) {
 		HashMap<String, Integer> l = Lk.get(s.size()-1);
 		for(String key:l.keySet()){
@@ -83,6 +110,10 @@ public class AssociationRuleMiner {
 		}
 		return 0;
 	}
+	
+	/**
+	 * @return HashMap with key as the set of items in csv format and value as support
+	 */
 	private HashMap<String,Integer> generateC1(){
 		HashMap<String,Integer> c1 = new HashMap<String, Integer>();
 		for (int i = 0; i < dataset.length; i++) {
@@ -94,6 +125,10 @@ public class AssociationRuleMiner {
 		return c1;
 	}
 	
+	/**
+	 * @param l the Lk computed in the previous iteration
+	 * @return HashMap with key as the set of items in csv format and value as support
+	 */
 	private HashMap<String, Integer> generateC(HashMap<String, Integer> l) {
 		HashMap<String, Integer> c2 = new HashMap<String, Integer>();
 		ArrayList<String> newCandidates = selfJoin(l.keySet());// prune(selfJoin(l.keySet()));
@@ -103,6 +138,10 @@ public class AssociationRuleMiner {
 		return c2;
 	}
 	
+	/**
+	 * @param c the Ck value generated in the previous iteration
+	 * @return HashMap with key as the set of items in csv format and value as support
+	 */
 	private HashMap<String, Integer> generateL(HashMap<String, Integer> c) {
 		HashMap<String, Integer> l = new HashMap<String, Integer>();
 		for (String key : c.keySet()) {
@@ -113,21 +152,11 @@ public class AssociationRuleMiner {
 		return l;
 	}
 		
-	private boolean subsetItemExistsInPreviousK(ArrayList<String> subsetItem, Set<String> previousK){
-		for(String previousKItem: previousK){
-			String []subsetItemToArr =new String[subsetItem.size()];
-			subsetItemToArr = subsetItem.toArray(subsetItemToArr);
-			String []previousKitemtoSplitArr =previousKItem.split(",");
-			if(MyUtils.isArrayInArray(subsetItemToArr, previousKitemtoSplitArr) ) return true;
-		}
-		return false;
-	}
-	private boolean allSubsetsExists(ArrayList<ArrayList<String>> subsets,Set<String> previousK){
-		for(ArrayList<String> subsetItem : subsets){
-			if(subsetItemExistsInPreviousK(subsetItem,previousK) == false) return false;
-		}
-		return true;
-	}
+	/**
+	 * Applies the apriori algorithm to prune subtrees
+	 * @param candidate ArrayList of csv items
+	 * @return the pruned array list of csv items
+	 */
 	private ArrayList<String> prune(ArrayList<String> candidate){
 		ArrayList<String> ret = new ArrayList<String>();
 		for(int i = 0; i < candidate.size(); i++ ){
@@ -139,9 +168,41 @@ public class AssociationRuleMiner {
 		}
 		return ret;
 	}
-		
 	
+	/**
+	 * checks if all subsets of set 1 exists in set 2
+	 * @param listOfSets
+	 * @param set2
+	 * @return
+	 */
+	private boolean allSubsetsExists(ArrayList<ArrayList<String>> listOfSets,Set<String> set2){
+		for(ArrayList<String> subsetItem : listOfSets){
+			if(subsetItemExistsInPreviousK(subsetItem,set2) == false) return false;
+		}
+		return true;
+	}
 
+	/**
+	 * checks if a set of item exists in the set of Lk
+	 * @param subsetItem Array List of csv
+	 * @param previousLk Set of csv
+	 * @return
+	 */
+	private boolean subsetItemExistsInPreviousK(ArrayList<String> subsetItem, Set<String> previousLk){
+		for(String previousKItem: previousLk){
+			String []subsetItemToArr =new String[subsetItem.size()];
+			subsetItemToArr = subsetItem.toArray(subsetItemToArr);
+			String []previousKitemtoSplitArr =previousKItem.split(",");
+			if(MyUtils.isArrayInArray(subsetItemToArr, previousKitemtoSplitArr) ) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Joins a set with itself to create a new set
+	 * @param keySet
+	 * @return new joined set as ArrayList of csv
+	 */
 	private ArrayList<String> selfJoin(Set<String> keySet) {
 		ArrayList<String> join = new ArrayList<String>();
 		int k = keySet.iterator().next().split(",").length;
@@ -162,6 +223,12 @@ public class AssociationRuleMiner {
 		return join;
 	}
 
+	/**
+	 * check if key1Elems and key2Elems can be joined and return the joined string
+	 * @param key1Elems
+	 * @param key2Elems
+	 * @return joined String
+	 */
 	private String getJoinedStringIfExists(String[] key1Elems,String[] key2Elems) {
 		if (key1Elems.length != key2Elems.length) return null;
 		
@@ -183,6 +250,11 @@ public class AssociationRuleMiner {
 		} else return null;
 	}
 
+	/**
+	 * calculates the number of times the key occurs in the dataset
+	 * @param key the item to search for
+	 * @return support count (not percentage)
+	 */
 	int computeSupport(String key) {
 		String[] keyArr = key.split(",");
 		int count = 0;

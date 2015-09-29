@@ -9,6 +9,11 @@ import java.util.Scanner;
 public class Driver {
 
 	
+	/**
+	 * removes the row id, appends each item with Gene(i) and outputs to a file
+	 * @param input input filename
+	 * @param output output filename
+	 */
 	public static void extractFile(String input, String output){
 		Scanner scan ;
 		PrintWriter writer ;
@@ -43,6 +48,13 @@ public class Driver {
 		
 	}
 	
+	/**
+	 * Loads a file to an n x m matrix
+	 * @param filename
+	 * @param rows
+	 * @param cols
+	 * @return n x m matrix 
+	 */
 	public static String[][] fileToDataset(String filename, int rows, int cols){
 		String[][] dataset = new String[rows][cols];
 		Scanner scan;
@@ -69,7 +81,7 @@ public class Driver {
 			out = new PrintStream(new FileOutputStream("onlyassociation40.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,40);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.40);
 			apriori.mine();
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
