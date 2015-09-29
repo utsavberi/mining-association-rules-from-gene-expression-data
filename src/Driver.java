@@ -8,12 +8,7 @@ import java.util.Scanner;
 
 public class Driver {
 
-	static void println(String msg){
-		System.out.println(msg);
-	}
-	static void print(String msg){
-		System.out.print(msg);
-	}
+	
 	public static void extractFile(String input, String output){
 		Scanner scan ;
 		PrintWriter writer ;
@@ -71,14 +66,13 @@ public class Driver {
 		PrintStream out;
 		try {
 			out = new PrintStream(new FileOutputStream("output.txt"));
-			System.setOut(out);
+			//System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			Apriori apriori = new Apriori(dataset,50);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,50);
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
 			System.out.println("total time taken"+totalTime);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
