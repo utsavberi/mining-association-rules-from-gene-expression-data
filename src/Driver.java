@@ -65,10 +65,10 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("output30.txt"));
+			out = new PrintStream(new FileOutputStream("output50.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,30);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,50);
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
 			System.out.println("total time taken"+totalTime);

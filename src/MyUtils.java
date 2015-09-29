@@ -1,6 +1,14 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class MyUtils{
+	public static String ListJoin(LinkedList<String> arr,String seperator){
+		String ret = "";
+		for(String str : arr){
+			ret += str+",";
+		}
+		return ret.substring(0, ret.length()-1);
+	}
 	public static void println(String msg){
 		System.out.println(msg);
 	}
