@@ -65,13 +65,14 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("output50.txt"));
+			out = new PrintStream(new FileOutputStream("output60_wPrune.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,50);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,60);
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
 			System.out.println("total time taken"+totalTime);
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

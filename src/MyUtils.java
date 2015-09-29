@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MyUtils{
 	public static String ListJoin(LinkedList<String> arr,String seperator){
@@ -41,5 +44,30 @@ public class MyUtils{
 		}
 		return true;
 		
+	}
+	
+	public static ArrayList<ArrayList<String>> findAllSubsets(List<String> originalSet){
+		ArrayList<ArrayList<String>> sets = new ArrayList<ArrayList<String>>();
+	    if (originalSet.isEmpty()) {
+	    	sets.add(new ArrayList<String>());
+	    	return sets;
+	    }
+	    String head = originalSet.get(0);
+	    ArrayList<String> rest = new ArrayList<String>(originalSet.subList(1, originalSet.size())); 
+	    for (ArrayList<String> set : findAllSubsets(rest)) {
+	    	ArrayList<String> newSet = new ArrayList<String>();
+	    	newSet.add(head);
+	    	newSet.addAll(set);
+	    	sets.add(newSet);
+	    	sets.add(set);
+	    }		
+	    return sets;
+	}
+	public static ArrayList<ArrayList<String>> findAllnItemSubsets(String[] arr,int n){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		for(ArrayList<String> ar: findAllSubsets(Arrays.asList(arr))){
+			if(ar.size()==n)ret.add(ar);
+		}
+		return ret;
 	}
 }

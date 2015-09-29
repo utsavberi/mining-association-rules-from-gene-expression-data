@@ -1,11 +1,13 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
 public class AssociationRuleMiner {
-
+	//TODO: instead of csv use array as key for all hashmaps
 	public String[][] dataset;
 	public int minSup;
 	public ArrayList<HashMap<String, Integer>> Ck = new ArrayList<HashMap<String, Integer>>();
@@ -28,6 +30,15 @@ public class AssociationRuleMiner {
 		return c1;
 	}
 	
+	public HashMap<String, Integer> generateC(HashMap<String, Integer> l) {
+		HashMap<String, Integer> c2 = new HashMap<String, Integer>();
+		ArrayList<String> newCandidates = selfJoin(l.keySet());// prune(selfJoin(l.keySet()));
+//		ArrayList<String> newCandidates  = prune(selfJoin(l.keySet()));
+		prune(selfJoin(l.keySet()));
+		for (String key : newCandidates) c2.put(key, computeSupport(key));
+		return c2;
+	}
+	
 	public HashMap<String, Integer> generateL(HashMap<String, Integer> c) {
 		HashMap<String, Integer> l = new HashMap<String, Integer>();
 		for (String key : c.keySet()) {
@@ -37,13 +48,34 @@ public class AssociationRuleMiner {
 		}
 		return l;
 	}
-	
-	public HashMap<String, Integer> generateC(HashMap<String, Integer> l) {
-		HashMap<String, Integer> c2 = new HashMap<String, Integer>();
-		for (String key : selfJoin(l.keySet()))	c2.put(key, computeSupport(key));
-		return c2;
+		
+	boolean subsetItemExistsInPreviousK(ArrayList<String> subsetItem, Set<String> previousK){
+		for(String previousKItem: previousK){
+			String []subsetItemToArr =new String[subsetItem.size()];
+			subsetItemToArr = subsetItem.toArray(subsetItemToArr);
+			String []previousKitemtoSplitArr =previousKItem.split(",");
+			if(MyUtils.isArrayInArray(subsetItemToArr, previousKitemtoSplitArr) ) return true;
+		}
+		return false;
 	}
-	
+	boolean allSubsetsExists(ArrayList<ArrayList<String>> subsets,Set<String> previousK){
+		for(ArrayList<String> subsetItem : subsets){
+			if(subsetItemExistsInPreviousK(subsetItem,previousK) == false) return false;
+		}
+		return true;
+	}
+	ArrayList<String> prune(ArrayList<String> candidate){
+		ArrayList<String> ret = new ArrayList<String>();
+		for(int i = 0; i < candidate.size(); i++ ){
+			String [] candItemSplit = candidate.get(i).split(",");
+			ArrayList<ArrayList<String>> subsets = MyUtils.findAllnItemSubsets(candItemSplit,candItemSplit.length-1);
+			if(allSubsetsExists(subsets,Lk.get(Lk.size()-1).keySet())){
+				ret.add(candidate.get(i));
+			}
+		}
+		return ret;
+	}
+		
 	public void mine() {		
 		MyUtils.println("printing l1");
 		HashMap<String, Integer> c = generateC1();
