@@ -4,9 +4,9 @@ import java.util.HashSet;
 public class AssociationRule {
 	public HashSet<String> head;
 	public HashSet<String> body;
-	public int confidence;
-	public AssociationRule(){}
-	public AssociationRule(HashSet<String> body,HashSet<String> head,int confidence){
+	public double confidence;
+	public AssociationRule(HashSet<String> s, double d){}
+	public AssociationRule(HashSet<String> body,HashSet<String> head,double confidence){
 		this.body = body;
 		this.head = head;
 		this.confidence = confidence;

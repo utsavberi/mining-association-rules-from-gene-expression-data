@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class AssociationRuleMiner {
-	//TODO: instead of csv use HashSet as key for all hashmaps
+	//TODO: instead of csv string use HashSet as key for all hashmaps
 	private String[][] dataset;
 	private int minSup;
 	ArrayList<HashMap<String, Integer>> Ck = new ArrayList<HashMap<String, Integer>>();
@@ -20,24 +21,21 @@ public class AssociationRuleMiner {
 		this.minSup = minSup;
 	}
 	public ArrayList<HashMap<String, Integer>> generateFrequentItemSet(){
-		MyUtils.println("printing l1");
+//		MyUtils.println("printing l1");
 		HashMap<String, Integer> c = generateC1();
 		HashMap<String, Integer> l = generateL(c);
-		
 		Ck.add(c);
 		Lk.add(l);
-		MyUtils.printHashMap(l);
-		
+//		MyUtils.printHashMap(l);
 		int i = 2;
 		while(l.size()>0){
 			c = generateC(l);
 			l = generateL(c);
-			MyUtils.println("printing l"+i++);
+//			MyUtils.println("printing l"+i++);
 			Ck.add(c);
 			Lk.add(l);
-			MyUtils.printHashMap(l);
+//			MyUtils.printHashMap(l);
 		}
-		
 		return Lk;
 	}
 	public void mine() {		
@@ -55,13 +53,16 @@ public class AssociationRuleMiner {
 					for(ArrayList<String> subset: subsets){
 						if(subset.size()==0){continue;}
 						//s-> (I-s)
-						//support_count(l) / support_count(s)
+						//support_count(i) / support_count(s)
+						int support_i = currentK.get(str);
+						
 						HashSet<String> s = new HashSet<String>(subset);
 						HashSet<String> ii = new HashSet<String>(Arrays.asList(I));
 						HashSet<String> head =  new HashSet<String>(ii);
 						head.removeAll(s);
+						int support_s = findSupportOf(s);
 						if(head.size()>0){
-							AssociationRule rule = new AssociationRule(s,head,calculateConfidence(s,head));
+							AssociationRule rule = new AssociationRule(s,head,((double) support_i)/support_s);
 							rules.add(rule);
 						}
 					}
@@ -69,7 +70,17 @@ public class AssociationRuleMiner {
 			}
 			return rules;
 	}
-	private int calculateConfidence(HashSet<String> s, HashSet<String> head) {
+	
+	
+	private int findSupportOf(HashSet<String> s) {
+		HashMap<String, Integer> l = Lk.get(s.size()-1);
+		for(String key:l.keySet()){
+			String [] keyArr  = key.split(",");
+			HashSet<String> x = new HashSet<String>(Arrays.asList(keyArr));
+			if(x.equals(s)){
+				return l.get(key);
+			};
+		}
 		return 0;
 	}
 	private HashMap<String,Integer> generateC1(){

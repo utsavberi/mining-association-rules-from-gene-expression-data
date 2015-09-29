@@ -53,7 +53,8 @@ public class Driver {
 			}
 			scan.close();
 		}catch(FileNotFoundException ex){
-			
+			ex.printStackTrace();
+
 		}
 		
 		return dataset;
@@ -65,14 +66,14 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("association70.txt"));
+			out = new PrintStream(new FileOutputStream("onlyassociation40.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,70);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,40);
 			apriori.mine();
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-			System.out.println("total time taken"+totalTime);
+//			System.out.println("total time taken"+totalTime);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
