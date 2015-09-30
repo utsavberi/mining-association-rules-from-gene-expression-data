@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.Scanner;
 
 
@@ -78,14 +79,21 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("onlyassociation40.txt"));
+			out = new PrintStream(new FileOutputStream("onlyassociation50testCase.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.40);
-			apriori.mine();
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.50);
+			for(AssociationRule rule :new HashSet<AssociationRule>( apriori.mine())){
+				if(rule.confidence>=.70){ 
+//						if(rule.body.contains("Gene1_UP")|| rule.body.contains("Gene10_DOWN") 
+//						|| rule.head.contains("Gene1_UP")|| rule.head.contains("Gene10_DOWN"))
+					MyUtils.println(rule.toString());
+					}
+			};
+			//RULE HAS 1 OF ['Gene1_UP', 'Gene10_Down']
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-//			System.out.println("total time taken"+totalTime);
+			System.out.println("total time taken"+totalTime);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
