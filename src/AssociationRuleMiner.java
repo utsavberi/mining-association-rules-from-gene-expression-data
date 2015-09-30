@@ -37,8 +37,9 @@ public class AssociationRuleMiner {
 	 */
 	public ArrayList<AssociationRule> mine() {		
 		ArrayList<HashMap<String, Integer>>  frequentItemSets = generateFrequentItemSet();
-		ArrayList<AssociationRule> associationRules = generateAssociationRules(frequentItemSets);
-		return associationRules;
+		//ArrayList<AssociationRule> associationRules = generateAssociationRules(frequentItemSets);
+//		return associationRules;
+		return null;
 	}
 
 	/**
@@ -50,15 +51,15 @@ public class AssociationRuleMiner {
 		HashMap<String, Integer> l = generateL(c);
 		Ck.add(c);
 		Lk.add(l);
-//		MyUtils.printHashMap(l);
+		MyUtils.printHashMap(l);
 		int i = 2;
 		while(l.size()>0){
 			c = generateC(l);
 			l = generateL(c);
-//			MyUtils.println("printing l"+i++);
+			MyUtils.println("printing l"+i++);
 			Ck.add(c);
 			Lk.add(l);
-//			MyUtils.printHashMap(l);
+			MyUtils.printHashMap(l);
 		}
 		return Lk;
 	}

@@ -78,14 +78,14 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("onlyassociation40.txt"));
+			out = new PrintStream(new FileOutputStream("frequent50.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.40);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.50);
 			apriori.mine();
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-//			System.out.println("total time taken"+totalTime);
+			System.out.println("total time taken"+totalTime);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
