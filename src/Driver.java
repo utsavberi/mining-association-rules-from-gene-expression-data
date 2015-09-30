@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.Scanner;
 
 
@@ -78,16 +79,18 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("frequent50.txt"));
-			System.setOut(out);
-			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.50);
-			apriori.mine();
-			long endTime   = System.currentTimeMillis();
-			long totalTime = endTime - startTime;
-			System.out.println("total time taken"+totalTime);
+			double [] arr = {.70,.60,.50,.40,.30};
+			for(double t : arr){
+				out = new PrintStream(new FileOutputStream("out"+((int)(t*100))+".txt"));
+				System.setOut(out);
+				long startTime = System.currentTimeMillis();
+				AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,t);
+				MyUtils.println(apriori.mine().toString());
+				long endTime   = System.currentTimeMillis();
+				long totalTime = endTime - startTime;
+				System.out.println("total time taken :"+totalTime);}
 
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
