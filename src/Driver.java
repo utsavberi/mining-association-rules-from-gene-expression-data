@@ -79,22 +79,16 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("frequent30wsetsNprune.txt"));
-			System.setOut(out);
-			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.30);
-			apriori.mine();
-//			for(AssociationRule rule :new HashSet<AssociationRule>( apriori.mine())){
-//				if(rule.confidence>=.70){ 
-////						if(rule.body.contains("Gene1_UP")|| rule.body.contains("Gene10_DOWN") 
-////						|| rule.head.contains("Gene1_UP")|| rule.head.contains("Gene10_DOWN"))
-//					MyUtils.println(rule.toString());
-//					}
-//			};
-			//RULE HAS 1 OF ['Gene1_UP', 'Gene10_Down']
-			long endTime   = System.currentTimeMillis();
-			long totalTime = endTime - startTime;
-			System.out.println("total time taken"+totalTime);
+			double [] arr = {.70,.60,.50,.40,.30};
+			for(double t : arr){
+				out = new PrintStream(new FileOutputStream("out"+((int)(t*100))+".txt"));
+				System.setOut(out);
+				long startTime = System.currentTimeMillis();
+				AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,t);
+				MyUtils.println(apriori.mine().toString());
+				long endTime   = System.currentTimeMillis();
+				long totalTime = endTime - startTime;
+				System.out.println("total time taken :"+totalTime);}
 
 		} catch (Exception e) {
 			e.printStackTrace();
