@@ -64,11 +64,30 @@ public class MyUtils{
 	    }		
 	    return sets;
 	}
-	public static ArrayList<ArrayList<String>> findAllnItemSubsets(String[] arr,int n){
-		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
-		for(ArrayList<String> ar: findAllSubsets(Arrays.asList(arr))){
+	public static HashSet<HashSet<String>> findAllnItemSubsets(HashSet<String> arr,int n){
+		HashSet<HashSet<String>> ret = new HashSet<HashSet<String>>();
+//		for(ArrayList<String> ar: findAllSubsets(Arrays.asList(arr))){
+		for(HashSet<String> ar: powerSet(arr)){
 			if(ar.size()==n)ret.add(ar);
 		}
 		return ret;
+	}
+	public static HashSet<HashSet<String>> powerSet(HashSet<String> originalSet) {
+		HashSet<HashSet<String>> sets = new HashSet<HashSet<String>>();
+	    if (originalSet.isEmpty()) {
+	    	sets.add(new HashSet<String>());
+	    	return sets;
+	    }
+	    List<String> list = new ArrayList<String>(originalSet);
+	    String head = list.get(0);
+	    HashSet<String> rest = new HashSet<String>(list.subList(1, list.size())); 
+	    for (HashSet<String> set : powerSet(rest)) {
+	    	HashSet<String> newSet = new HashSet<String>();
+	    	newSet.add(head);
+	    	newSet.addAll(set);
+	    	sets.add(newSet);
+	    	sets.add(set);
+	    }		
+	    return sets;
 	}
 }

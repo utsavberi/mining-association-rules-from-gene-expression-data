@@ -1,11 +1,7 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -58,9 +54,6 @@ public class AssociationRuleMiner {
 			MyUtils.println("printing l"+i++);
 			Ck.add(c);
 			Lk.add(l);
-//			MyUtils.println("cccc");
-//			MyUtils.printHashMap(c);
-//MyUtils.println("lll");
 			MyUtils.printHashMap(l);
 		}
 		return Lk;
@@ -105,8 +98,7 @@ public class AssociationRuleMiner {
 	private int findSupportOf(HashSet<HashSet<String>> s) {
 		HashMap<HashSet<String>, Integer> l = Lk.get(s.size()-1);
 		for(HashSet<String> keyArr:l.keySet()){
-			//String [] keyArr  = key.split(",");
-			HashSet<String> x = keyArr;//new HashSet<String>(Arrays.asList(keyArr));
+			HashSet<String> x = keyArr;
 			if(x.equals(s)){
 				return l.get(keyArr);
 			};
@@ -118,14 +110,12 @@ public class AssociationRuleMiner {
 	 * @return HashMap with key as the set of items in csv format and value as support
 	 */
 	private HashMap<HashSet<String>,Integer> generateC1(){
-//		HashMap<String,Integer> c1 = new HashMap<String, Integer>();
 		HashMap<HashSet<String>,Integer> c1 = new HashMap<HashSet<String>, Integer>();
 
 		for (int i = 0; i < dataset.length; i++) {
 			for (int j = 0; j < dataset[0].length; j++) {
 				HashSet<String> item = new HashSet<String>();
 				item.add(dataset[i][j]);
-//				String item = dataset[i][j];
 				c1.put(item, c1.get(item) == null ? 1 : c1.get(item) + 1);
 			}
 		}
@@ -165,29 +155,32 @@ public class AssociationRuleMiner {
 	 * @return the pruned array list of csv items
 	 */
 	//TODO: implement this
-//	private ArrayList<String> prune(ArrayList<String> candidate){
-//		ArrayList<String> ret = new ArrayList<String>();
-//		for(int i = 0; i < candidate.size(); i++ ){
-//			String [] candItemSplit = candidate.get(i).split(",");
-//			ArrayList<ArrayList<String>> subsets = MyUtils.findAllnItemSubsets(candItemSplit,candItemSplit.length-1);
-//			if(allSubsetsExists(subsets,Lk.get(Lk.size()-1).keySet())){
-//				ret.add(candidate.get(i));
-//			}
-//		}
-//		return ret;
-//	}
+	private ArrayList<HashSet<String>> prune(ArrayList<HashSet<String>> candidate){
+		ArrayList<HashSet<String>> ret = new ArrayList<HashSet<String>>();
+		for(int i = 0; i < candidate.size(); i++ ){
+			//String [] candItemSplit = candidate.get(i).split(",");
+//			HashSet<HashSet<String>> subsets = MyUtils.findAllnItemSubsets(candItemSplit,candItemSplit.length-1);
+			HashSet<HashSet<String>> subsets = MyUtils.findAllnItemSubsets(candidate.get(i),candidate.get(i).size()-1);
+			Set<HashSet<String>> prevLk = Lk.get(Lk.size()-1).keySet();
+			if(allSubsetsExistsInPrevLk(subsets,prevLk)){
+				ret.add(candidate.get(i));
+			}
+		}
+		return ret;
+	}
 	
 	/**
 	 * checks if all subsets of set 1 exists in set 2
 	 * @param listOfSets
-	 * @param set2
+	 * @param prevLk
 	 * @return
 	 */
-	private boolean allSubsetsExists(ArrayList<ArrayList<String>> listOfSets,Set<String> set2){
-		for(ArrayList<String> subsetItem : listOfSets){
-			if(subsetItemExistsInPreviousK(subsetItem,set2) == false) return false;
-		}
-		return true;
+	private boolean allSubsetsExistsInPrevLk(HashSet<HashSet<String>> listOfSets,Set<HashSet<String>> prevLk){
+//		for(HashSet<String> subsetItem : listOfSets){
+//			if(subsetItemExistsInPreviousK(subsetItem,prevLk) == false) return false;
+//		}
+//		return true;
+		return prevLk.containsAll(listOfSets);
 	}
 
 	/**
@@ -213,7 +206,7 @@ public class AssociationRuleMiner {
 	 */
 	private ArrayList<HashSet<String>> selfJoin(Set<HashSet<String>> keySet) {
 		ArrayList<HashSet<String>> join = new ArrayList<HashSet<String>>();
-		int k = keySet.iterator().next().size();//keySet.iterator().next().split(",").length;
+		int k = keySet.iterator().next().size();
 		for (HashSet<String> key1 : keySet) {
 			for (HashSet<String> key2 : keySet) {
 				if (!key1.equals(key2)) {
@@ -221,14 +214,8 @@ public class AssociationRuleMiner {
 						HashSet<String> union = new HashSet<String>(key1);
 						union.addAll(key2);
 						join.add(union);
-						//join.add(key1. + "," + key2);
 					}
 					else{
-						// MyUtils.println("checking keys "+key1+" >> "+key2);
-//						String[] key1Elems = key1.split(",");
-//						String[] key2Elems = key2.split(",");
-//						String> joinedString = getJoinedStringIfExists(key1Elems, key2Elems);
-
 						HashSet<String> joinedString = getJoinedStringIfExists(key1, key2);
 						if (joinedString != null) join.add(joinedString);
 					}
@@ -246,28 +233,14 @@ public class AssociationRuleMiner {
 	 */
 	private HashSet<String> getJoinedStringIfExists(HashSet<String> key1Elems,HashSet<String> key2Elems) {
 		if (key1Elems.size() != key2Elems.size()) return null;
-		
-//		HashMap<String, Integer> map = new HashMap<String, Integer>();
-//		LinkedList<String> ones = new LinkedList<String>(); 
-//		LinkedList<String> twos = new LinkedList<String>();
-//		//TODO:use Union set instead of ones twos
-//		for (String str : key1Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
-//		for (String str : key2Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
-//		
-//		for (Entry<String, Integer> e : map.entrySet()) {
-//			if (e.getValue() == 2) twos.add(e.getKey());
-//			else if (e.getValue() == 1) ones.add(e.getKey());
-//			else return null;
-//		}
-//		if (ones.size() == 2) {
+	
 			HashSet<String> joined = new HashSet<String>(key1Elems);
 			joined.addAll(key2Elems);
 			if(joined.size()==key1Elems.size()+1)
-			{//MyUtils.ListJoin(twos,",")+","+MyUtils.ListJoin(ones,",");
+			{
 				return joined;
 			}
 			else return null;
-//		} else return null;
 	}
 
 	/**
@@ -276,12 +249,9 @@ public class AssociationRuleMiner {
 	 * @return support count (not percentage)
 	 */
 	int computeSupport(HashSet<String> key) {
-//		String[] keyArr = key.split(",");
 		int count = 0;
 		for (int i = 0; i < dataset.length; i++) {
-//			if (MyUtils.isArrayInArray(keyArr, dataset[i]) == true) count++;
 			HashSet<String> tmp = new HashSet<String>(Arrays.asList(dataset[i]));
-//			MyUtils.println("compare"+tmp+"and"+key);
 			if(tmp.containsAll(key)) count++;
 		}
 		return count;

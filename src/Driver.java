@@ -79,10 +79,10 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			out = new PrintStream(new FileOutputStream("onlyassociation60wSets.txt"));
+			out = new PrintStream(new FileOutputStream("frequent30wsetsNprune.txt"));
 			System.setOut(out);
 			long startTime = System.currentTimeMillis();
-			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.60);
+			AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,.30);
 			apriori.mine();
 //			for(AssociationRule rule :new HashSet<AssociationRule>( apriori.mine())){
 //				if(rule.confidence>=.70){ 

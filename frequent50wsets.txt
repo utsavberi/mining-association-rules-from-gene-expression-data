@@ -1,0 +1,179 @@
+printing l1
+[Gene18_Down] : 53
+[Gene9_UP] : 50
+[Gene72_UP] : 74
+[Gene73_Down] : 52
+[Gene91_UP] : 65
+[Gene61_Down] : 51
+[Gene30_Down] : 56
+[Gene93_UP] : 53
+[Gene25_UP] : 57
+[Gene57_Down] : 51
+[Gene52_Down] : 65
+[Gene51_Down] : 56
+[Gene95_Down] : 60
+[Gene4_UP] : 50
+[Gene90_UP] : 52
+[Gene23_UP] : 54
+[Gene80_Down] : 64
+[Gene86_Down] : 54
+[Gene77_UP] : 58
+[Gene68_Down] : 61
+[Gene31_UP] : 51
+[Gene13_Down] : 68
+[Gene24_Down] : 63
+[Gene83_Down] : 50
+[Gene33_Down] : 51
+[Gene48_UP] : 57
+[Gene21_UP] : 62
+[Gene67_UP] : 62
+[Gene85_Down] : 51
+[Gene78_UP] : 59
+[Gene55_UP] : 55
+[Gene99_UP] : 56
+[Gene81_UP] : 58
+[Gene49_Down] : 52
+[Gene32_Down] : 68
+[Gene39_UP] : 51
+[Gene11_Down] : 57
+[Gene97_Down] : 61
+[Gene82_Down] : 68
+[Gene34_Down] : 56
+[Gene42_Down] : 52
+[Gene70_Down] : 66
+[Gene96_Down] : 71
+[Gene5_UP] : 54
+[Gene76_Down] : 62
+[Gene29_Down] : 52
+[Gene62_Down] : 53
+[Gene6_UP] : 66
+[Gene3_UP] : 50
+[Gene75_UP] : 57
+[Gene64_Down] : 50
+[Gene74_Down] : 53
+[Gene98_UP] : 51
+[Gene1_UP] : 69
+[Gene14_UP] : 52
+[Gene43_UP] : 50
+[Gene66_UP] : 59
+[Gene40_Down] : 53
+[Gene36_UP] : 61
+[Gene54_UP] : 67
+[Gene89_UP] : 59
+[Gene53_UP] : 50
+[Gene47_UP] : 66
+[Gene53_Down] : 50
+[Gene45_UP] : 58
+[Gene83_UP] : 50
+[Gene43_Down] : 50
+[Gene10_Down] : 70
+[Gene84_UP] : 54
+[Gene19_Down] : 53
+[Gene60_UP] : 54
+[Gene37_UP] : 56
+[Gene27_UP] : 51
+[Gene94_UP] : 62
+[Gene88_Down] : 71
+[Gene87_UP] : 67
+[Gene64_UP] : 50
+[Gene63_UP] : 50
+[Gene41_Down] : 64
+[Gene71_UP] : 58
+[Gene22_UP] : 55
+[Gene4_Down] : 50
+[Gene9_Down] : 50
+[Gene28_Down] : 71
+[Gene44_Down] : 58
+[Gene26_UP] : 52
+[Gene65_Down] : 61
+[Gene63_Down] : 50
+[Gene59_UP] : 76
+[Gene79_Down] : 52
+[Gene35_Down] : 53
+[Gene3_Down] : 50
+[Gene92_Down] : 53
+[Gene8_UP] : 66
+[Gene100_Down] : 53
+[Gene15_Down] : 56
+[Gene2_Down] : 66
+[Gene12_UP] : 54
+[Gene56_UP] : 51
+[Gene50_UP] : 50
+[Gene38_Down] : 73
+[Gene17_UP] : 55
+[Gene16_Down] : 58
+[Gene46_Down] : 52
+[Gene69_Down] : 62
+[Gene7_Down] : 51
+[Gene58_Down] : 64
+[Gene50_Down] : 50
+[Gene20_Down] : 53
+printing l2
+[Gene8_UP, Gene88_Down] : 51
+[Gene54_UP, Gene88_Down] : 52
+[Gene72_UP, Gene13_Down] : 53
+[Gene97_Down, Gene82_Down] : 51
+[Gene72_UP, Gene97_Down] : 51
+[Gene72_UP, Gene1_UP] : 52
+[Gene52_Down, Gene38_Down] : 55
+[Gene10_Down, Gene88_Down] : 52
+[Gene59_UP, Gene38_Down] : 53
+[Gene10_Down, Gene1_UP] : 50
+[Gene1_UP, Gene54_UP] : 50
+[Gene28_Down, Gene47_UP] : 51
+[Gene59_UP, Gene10_Down] : 50
+[Gene28_Down, Gene10_Down] : 51
+[Gene10_Down, Gene70_Down] : 50
+[Gene1_UP, Gene70_Down] : 50
+[Gene38_Down, Gene70_Down] : 54
+[Gene87_UP, Gene28_Down] : 52
+[Gene38_Down, Gene32_Down] : 53
+[Gene72_UP, Gene96_Down] : 59
+[Gene10_Down, Gene94_UP] : 50
+[Gene6_UP, Gene59_UP] : 51
+[Gene67_UP, Gene38_Down] : 51
+[Gene72_UP, Gene82_Down] : 58
+[Gene47_UP, Gene38_Down] : 54
+[Gene38_Down, Gene65_Down] : 50
+[Gene52_Down, Gene28_Down] : 52
+[Gene59_UP, Gene13_Down] : 54
+[Gene72_UP, Gene59_UP] : 62
+[Gene28_Down, Gene13_Down] : 50
+[Gene82_Down, Gene13_Down] : 51
+[Gene59_UP, Gene96_Down] : 61
+[Gene96_Down, Gene82_Down] : 52
+[Gene38_Down, Gene94_UP] : 51
+[Gene28_Down, Gene32_Down] : 50
+[Gene10_Down, Gene47_UP] : 51
+[Gene28_Down, Gene41_Down] : 51
+[Gene38_Down, Gene88_Down] : 50
+[Gene28_Down, Gene38_Down] : 55
+[Gene28_Down, Gene88_Down] : 52
+[Gene28_Down, Gene2_Down] : 50
+[Gene72_UP, Gene38_Down] : 51
+[Gene87_UP, Gene59_UP] : 51
+[Gene59_UP, Gene88_Down] : 55
+[Gene38_Down, Gene91_UP] : 53
+[Gene6_UP, Gene28_Down] : 50
+[Gene6_UP, Gene13_Down] : 50
+[Gene41_Down, Gene38_Down] : 50
+[Gene24_Down, Gene54_UP] : 50
+[Gene6_UP, Gene32_Down] : 50
+[Gene59_UP, Gene82_Down] : 57
+[Gene72_UP, Gene32_Down] : 50
+[Gene87_UP, Gene88_Down] : 54
+[Gene10_Down, Gene38_Down] : 53
+[Gene67_UP, Gene1_UP] : 50
+[Gene38_Down, Gene2_Down] : 50
+[Gene38_Down, Gene1_UP] : 54
+[Gene59_UP, Gene32_Down] : 52
+[Gene41_Down, Gene88_Down] : 52
+[Gene59_UP, Gene28_Down] : 51
+[Gene6_UP, Gene38_Down] : 50
+[Gene24_Down, Gene88_Down] : 50
+[Gene59_UP, Gene1_UP] : 53
+printing l3
+[Gene72_UP, Gene59_UP, Gene82_Down] : 52
+[Gene72_UP, Gene59_UP, Gene96_Down] : 51
+printing l4
+total time taken5122
