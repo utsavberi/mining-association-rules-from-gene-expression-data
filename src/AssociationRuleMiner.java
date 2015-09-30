@@ -14,7 +14,6 @@ import java.util.Set;
  */
 
 public class AssociationRuleMiner {
-	//TODO: instead of csv string use HashSet as key for all hashmaps
 	private String[][] dataset;
 	private int minSup;
 	ArrayList<HashMap<HashSet<String>, Integer>> Ck = new ArrayList<HashMap<HashSet<String>, Integer>>();
@@ -27,7 +26,7 @@ public class AssociationRuleMiner {
 	 */
 	public AssociationRuleMiner(String[][] dataset, double minSup) {
 		this.dataset = dataset;
-		this.minSup = (int) (minSup*dataset.length);
+		this.minSup = (int) (Math.ceil(minSup*dataset.length));
 	}
 	
 	/**
@@ -248,24 +247,27 @@ public class AssociationRuleMiner {
 	private HashSet<String> getJoinedStringIfExists(HashSet<String> key1Elems,HashSet<String> key2Elems) {
 		if (key1Elems.size() != key2Elems.size()) return null;
 		
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		LinkedList<String> ones = new LinkedList<String>(); 
-		LinkedList<String> twos = new LinkedList<String>();
-		//TODO:use Union set instead of ones twos
-		for (String str : key1Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
-		for (String str : key2Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
-		
-		for (Entry<String, Integer> e : map.entrySet()) {
-			if (e.getValue() == 2) twos.add(e.getKey());
-			else if (e.getValue() == 1) ones.add(e.getKey());
-			else return null;
-		}
-		if (ones.size() == 2) {
+//		HashMap<String, Integer> map = new HashMap<String, Integer>();
+//		LinkedList<String> ones = new LinkedList<String>(); 
+//		LinkedList<String> twos = new LinkedList<String>();
+//		//TODO:use Union set instead of ones twos
+//		for (String str : key1Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
+//		for (String str : key2Elems) map.put(str, map.get(str) == null ? 1 : map.get(str) + 1);
+//		
+//		for (Entry<String, Integer> e : map.entrySet()) {
+//			if (e.getValue() == 2) twos.add(e.getKey());
+//			else if (e.getValue() == 1) ones.add(e.getKey());
+//			else return null;
+//		}
+//		if (ones.size() == 2) {
 			HashSet<String> joined = new HashSet<String>(key1Elems);
 			joined.addAll(key2Elems);
-			//MyUtils.ListJoin(twos,",")+","+MyUtils.ListJoin(ones,",");
-			return joined;
-		} else return null;
+			if(joined.size()==key1Elems.size()+1)
+			{//MyUtils.ListJoin(twos,",")+","+MyUtils.ListJoin(ones,",");
+				return joined;
+			}
+			else return null;
+//		} else return null;
 	}
 
 	/**
