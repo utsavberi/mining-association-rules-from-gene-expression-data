@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class MyUtils{
 			println("");
 		}
 	}
-	public static void printHashMap(HashMap<String,Integer> map){
-		for(String s : map.keySet()){
-			System.out.println("{"+s+"} : "+map.get(s));
+	public static void printHashMap(HashMap<HashSet<String>,Integer> map){
+		for(HashSet<String> s : map.keySet()){
+			System.out.println(s+" : "+map.get(s));
 		}
 	}
 	public static boolean isStringInArray(String str, String[] arr){
