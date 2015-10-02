@@ -1,3 +1,4 @@
+package ruleMiner;
 import java.util.HashSet;
 
 

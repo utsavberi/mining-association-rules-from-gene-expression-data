@@ -1,3 +1,4 @@
+package ui;
 import java.awt.EventQueue;
 
 import javax.swing.DefaultListModel;
@@ -36,6 +37,11 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
+import parser.AssociationRuleParser;
+import ruleMiner.AssociationRule;
+import ruleMiner.AssociationRuleMiner;
+import ruleMiner.MyUtils;
 
 
 public class AprioriRunner {
@@ -109,6 +115,7 @@ public class AprioriRunner {
 	private JLabel lblSupport;
 	private JLabel lblStatus;
 	private JButton btnChooseFile;
+	private JList<AssociationRule> outList;
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -189,6 +196,11 @@ public class AprioriRunner {
 		searchRuleTxt.setColumns(10);
 		
 		JButton btnGo = new JButton("GO");
+		btnGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				runRule();
+			}
+		});
 		GridBagConstraints gbc_btnGo = new GridBagConstraints();
 		gbc_btnGo.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGo.gridx = 3;
@@ -205,7 +217,7 @@ public class AprioriRunner {
 		gbc_scrollPane.gridy = 2;
 		rulePane.add(scrollPane, gbc_scrollPane);
 		
-		JList<AssociationRule> outList = new JList<AssociationRule>();
+		outList = new JList<AssociationRule>();
 		scrollPane.setViewportView(outList);
 		outList.setValueIsAdjusting(true);
 		
@@ -318,5 +330,28 @@ public class AprioriRunner {
 		});
 		btnChooseFile.setBounds(681, 34, 117, 25);
 		frame.getContentPane().add(btnChooseFile);
+	}
+	
+	void runRule(){
+		AssociationRuleParser parser = new AssociationRuleParser();
+	    ArrayList<AssociationRule> outputAssciationRules = new ArrayList<AssociationRule>();
+		int resultCount = 0;
+	    for (AssociationRule associationRule:apriori.getAsociationRules())
+		{
+		
+			if(parser.runParser(searchRuleTxt.getText(),associationRule))
+			{
+				resultCount++;
+				outputAssciationRules.add(associationRule);
+			}
+		}
+	    
+	    DefaultListModel <AssociationRule> model = new DefaultListModel<>();
+		for(AssociationRule rule: outputAssciationRules){
+			model.addElement(rule);
+		}
+		
+		outList.setModel(model);
+//		System.out.println(outputAssciationRules.toString());
 	}
 }
