@@ -1,0 +1,39 @@
+*****************Frequent item set 0***************
+[Gene87_UP]=67
+[Gene28_Down]=71
+[Gene95_Down]=60
+[Gene2_Down]=66
+[Gene47_UP]=66
+[Gene41_Down]=64
+[Gene76_Down]=62
+[Gene80_Down]=64
+[Gene72_UP]=74
+[Gene6_UP]=66
+[Gene91_UP]=65
+[Gene59_UP]=76
+[Gene8_UP]=66
+[Gene88_Down]=71
+[Gene82_Down]=68
+[Gene36_UP]=61
+[Gene96_Down]=71
+[Gene38_Down]=73
+[Gene68_Down]=61
+[Gene65_Down]=61
+[Gene67_UP]=62
+[Gene97_Down]=61
+[Gene52_Down]=65
+[Gene58_Down]=64
+[Gene13_Down]=68
+[Gene70_Down]=66
+[Gene21_UP]=62
+[Gene10_Down]=70
+[Gene54_UP]=67
+[Gene1_UP]=69
+[Gene69_Down]=62
+[Gene32_Down]=68
+[Gene24_Down]=63
+[Gene94_UP]=62
+*****************Frequent item set 34***************
+[Gene96_Down, Gene59_UP]=61
+[Gene72_UP, Gene59_UP]=62
+*****************Frequent item set 36***************

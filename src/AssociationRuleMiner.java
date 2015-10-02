@@ -63,6 +63,20 @@ public class AssociationRuleMiner {
 		this.minSup = (int) (Math.ceil(minSup*totalRows));
 	}
 	
+	/**
+	 * @param dataset an n x n matrix with each cell containing an item. Do not include headers or row ids 
+	 * @param minSup the minimum support eg .30 means 30% to be used
+	 */
+	public AssociationRuleMiner(ArrayList<String[]> dataset, double minSup) {
+		this.dataset = new String[dataset.size()][dataset.get(0).length];
+		for( int i = 0; i< dataset.size(); i++)
+			this.dataset[i] = dataset.get(i);
+		Ck = new ArrayList<HashMap<HashSet<String>, Integer>>();
+		Lk  = new ArrayList<HashMap<HashSet<String>, Integer>>();
+		this.totalRows = dataset.size();
+		this.minSup = (int) (Math.ceil(minSup*totalRows));
+	}
+	
 		
 	/**
 	 * Mines association rules by first computing the frequentItemSets

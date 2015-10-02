@@ -1,0 +1,15 @@
+*****************Frequent item set 0***************
+[Gene87_UP]=67
+[Gene88_Down]=71
+[Gene28_Down]=71
+[Gene82_Down]=68
+[Gene96_Down]=71
+[Gene38_Down]=73
+[Gene13_Down]=68
+[Gene10_Down]=70
+[Gene54_UP]=67
+[Gene1_UP]=69
+[Gene32_Down]=68
+[Gene72_UP]=74
+[Gene59_UP]=76
+*****************Frequent item set 13***************

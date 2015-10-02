@@ -1,18 +1,24 @@
 import java.awt.EventQueue;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JSpinner;
+import javax.swing.ListModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -27,6 +33,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 
 public class AprioriRunner {
@@ -35,77 +44,40 @@ public class AprioriRunner {
 	private JTextField filepathTxt;
 	AssociationRuleMiner apriori;
 	private JTextField searchRuleTxt;
+
 	/**
 	 * removes the row id, appends each item with Gene(i) and outputs to a file
 	 * @param input input filename
-	 * @param output output filename
+	 * @param output file converted to an array list
 	 */
-	public static int[] extractFile(String input, String output){
+	public static ArrayList<String[]> extractFile(String input){
 		Scanner scan ;
-		PrintWriter writer ;
+		ArrayList<String[]> lst = new ArrayList<String[]>();
 		try {
 			scan = new Scanner(new FileReader(input));
-			String newLine = System.getProperty("line.separator");
-			writer = new PrintWriter(output);
-			int x = 0;
-			int y = 0;
-			//scan.nextLine();
 			while(scan.hasNextLine()){
 				String line = scan.nextLine();
 				String []tokens = line.split(",");
-				y = tokens.length;
 				StringBuilder outLine = new StringBuilder();
-				x++;
 				for(int i = 1; i< tokens.length; i++){
-					
 					if(tokens[i].toLowerCase().startsWith("up") 
 							|| tokens[i].toLowerCase().startsWith("down")){
-					
 						outLine.append("Gene"+i+"_"+tokens[i]+",");
 					}
 					else{
 						outLine.append(tokens[i]+",");
 					}
 				}
-				
-				String out = outLine.toString().substring(0,outLine.length()-1)+newLine;
-				writer.write(out);
-				
+				lst.add(outLine.toString().split(","));
 			}
 			scan.close();
-			writer.close();
-			int dim [] = {x,y+1};
-			return dim;
+			return lst;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 	
-	/**
-	 * Loads a file to an n x m matrix
-	 * @param filename
-	 * @param rows
-	 * @param cols
-	 * @return n x m matrix 
-	 */
-	public static String[][] fileToDataset(String filename, int rows, int cols){
-		String[][] dataset = new String[rows][cols];
-		Scanner scan;
-		try{
-			scan = new Scanner(new FileReader(filename));
-			for(int i= 0; scan.hasNextLine(); i++){
-				dataset[i] = scan.nextLine().split(",");
-			}
-			scan.close();
-		}catch(FileNotFoundException ex){
-			ex.printStackTrace();
-
-		}
-		
-		return dataset;
-	}
 	/**
 	 * Launch the application.
 	 */
@@ -129,6 +101,14 @@ public class AprioriRunner {
 		initialize();
 	}
 
+	JLabel statusValLbl;
+	private JLabel lblEnterRuleTemplate;
+	private JPanel rulePane;
+	private JLabel lblFilepath;
+	private JSpinner supportPercentSpinner;
+	private JLabel lblSupport;
+	private JLabel lblStatus;
+	private JButton btnChooseFile;
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -140,30 +120,37 @@ public class AprioriRunner {
 		
 		filepathTxt = new JTextField();
 		filepathTxt.setText("association-rule-test-data.csv");
-		filepathTxt.setBounds(106, 37, 682, 19);
+		filepathTxt.setBounds(106, 37, 557, 19);
 		frame.getContentPane().add(filepathTxt);
 		filepathTxt.setColumns(10);
 		
-		JLabel lblFilepath = new JLabel("filepath");
+		lblFilepath = new JLabel("filepath");
 		lblFilepath.setBounds(12, 39, 70, 15);
 		frame.getContentPane().add(lblFilepath);
 		
 		
 		
-		JSpinner supportPercentSpinner = new JSpinner();
+		supportPercentSpinner = new JSpinner();
+		supportPercentSpinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				statusValLbl.setForeground(Color.BLUE);
+				statusValLbl.setText("Click on 'Load file and Mine' button" );
+				
+			}
+		});
 		supportPercentSpinner.setModel(new SpinnerNumberModel(50, 20, 100, 1));
 		supportPercentSpinner.setBounds(106, 63, 50, 20);
 		frame.getContentPane().add(supportPercentSpinner);
 		
-		JLabel lblSupport = new JLabel("Support (%)");
+		lblSupport = new JLabel("Support (%)");
 		lblSupport.setBounds(12, 66, 93, 15);
 		frame.getContentPane().add(lblSupport);
 		
-		JLabel lblStatus = new JLabel("Status:");
+		lblStatus = new JLabel("Status:");
 		lblStatus.setBounds(12, 12, 70, 15);
 		frame.getContentPane().add(lblStatus);
 		
-		JLabel statusValLbl = new JLabel("ready");
+		 statusValLbl = new JLabel("ready");
 		statusValLbl.setForeground(Color.GREEN);
 		statusValLbl.setBounds(104, 12, 638, 15);
 		frame.getContentPane().add(statusValLbl);
@@ -172,18 +159,18 @@ public class AprioriRunner {
 		
 		
 		
-		JPanel rulePane = new JPanel();
-		rulePane.setBounds(12, 113, 786, 326);
+		rulePane = new JPanel();
+		rulePane.setBounds(12, 95, 786, 371);
 		frame.getContentPane().add(rulePane);
 		GridBagLayout gbl_rulePane = new GridBagLayout();
 		gbl_rulePane.columnWidths = new int[]{0, 106, 484, 0, 0};
-		gbl_rulePane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_rulePane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_rulePane.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_rulePane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_rulePane.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		rulePane.setLayout(gbl_rulePane);
 		rulePane.hide();
 		
-		JLabel lblEnterRuleTemplate = new JLabel("Enter Rule Template");
+		lblEnterRuleTemplate = new JLabel("Enter Rule Template");
 		GridBagConstraints gbc_lblEnterRuleTemplate = new GridBagConstraints();
 		gbc_lblEnterRuleTemplate.anchor = GridBagConstraints.WEST;
 		gbc_lblEnterRuleTemplate.insets = new Insets(0, 0, 5, 5);
@@ -208,33 +195,76 @@ public class AprioriRunner {
 		gbc_btnGo.gridy = 1;
 		rulePane.add(btnGo, gbc_btnGo);
 		
-		JList outList = new JList();
-		GridBagConstraints gbc_outList = new GridBagConstraints();
-		gbc_outList.insets = new Insets(0, 0, 5, 0);
-		gbc_outList.gridheight = 5;
-		gbc_outList.gridwidth = 3;
-		gbc_outList.fill = GridBagConstraints.BOTH;
-		gbc_outList.gridx = 1;
-		gbc_outList.gridy = 2;
-		rulePane.add(outList, gbc_outList);
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 6;
+		gbc_scrollPane.gridwidth = 3;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 2;
+		rulePane.add(scrollPane, gbc_scrollPane);
+		
+		JList<AssociationRule> outList = new JList<AssociationRule>();
+		scrollPane.setViewportView(outList);
+		outList.setValueIsAdjusting(true);
+		
+		JButton btnSaveToFile = new JButton("Save To File");
+		btnSaveToFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser saveRuleToFileDlg = new JFileChooser();
+				if(saveRuleToFileDlg.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION){
+					try {
+						saveModelToFile(outList.getModel(),saveRuleToFileDlg.getSelectedFile());
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+
+			private void saveModelToFile(ListModel<AssociationRule> model,
+					File selectedFile) throws FileNotFoundException {
+				System.setOut(new PrintStream(new FileOutputStream(selectedFile.getPath())));
+				for(int i = 0; i< model.getSize(); i++){
+					MyUtils.println(model.getElementAt(i).toString());
+				}
+				
+			}
+		});
+		GridBagConstraints gbc_btnSaveToFile = new GridBagConstraints();
+		gbc_btnSaveToFile.gridx = 3;
+		gbc_btnSaveToFile.gridy = 8;
+		rulePane.add(btnSaveToFile, gbc_btnSaveToFile);
 		
 		JLabel lblConfidence = new JLabel("Confidence (%)");
 		lblConfidence.setBounds(188, 66, 105, 15);
 		frame.getContentPane().add(lblConfidence);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(70, null, 100, 1));
-		spinner.setBounds(296, 63, 50, 20);
-		frame.getContentPane().add(spinner);
+		JSpinner confidenceSpinner = new JSpinner();
+		confidenceSpinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				double confidence = new Integer(confidenceSpinner.getValue().toString())/(double)100;;
+				DefaultListModel <AssociationRule> model = new DefaultListModel<>();
+				for(AssociationRule rule: apriori.getAsociationRules(confidence)){
+					model.addElement(rule);
+				}
+				outList.setModel(model);
+
+			}
+		});
+		confidenceSpinner.setModel(new SpinnerNumberModel(70, null, 100, 1));
+		confidenceSpinner.setBounds(296, 63, 50, 20);
+		frame.getContentPane().add(confidenceSpinner);
 		
 		JButton btnLoadFileAnd = new JButton("Load file and Mine");
 		btnLoadFileAnd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				statusValLbl.setText("Mining");
-				int [] dim = extractFile("association-rule-test-data.csv","input.csv");
-				String [][] dataset = fileToDataset("input.csv",dim[0],dim[1]);
+				String filename = filepathTxt.getText();
+				ArrayList<String[]> l = extractFile(filename);
 				double sup = (new Integer(supportPercentSpinner.getValue().toString()))/(double)100;
-				apriori = new AssociationRuleMiner(dataset, sup);
+				apriori = new AssociationRuleMiner(l, sup);
 				apriori.mine();
 				String outFile = "UI_out_frequentItemSets_"+(sup)+".txt";
 				try {
@@ -248,17 +278,45 @@ public class AprioriRunner {
 						}
 						
 					}
+					double confidence = new Integer(confidenceSpinner.getValue().toString())/(double)100;;
+					DefaultListModel <AssociationRule> model = new DefaultListModel<>();
+					for(AssociationRule rule: apriori.getAsociationRules(confidence)){
+						model.addElement(rule);
+					}
+					
+					outList.setModel(model);
 					rulePane.show();
 					statusValLbl.setForeground(Color.GREEN);
 					statusValLbl.setText("Total :"+i+" candidates. Output stored to "+outFile );
 					
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
+					statusValLbl.setForeground(Color.RED);
+					statusValLbl.setText(e1.getMessage() );
+					
+					e1.printStackTrace();
+				}
+				catch(Exception e1){
+					statusValLbl.setForeground(Color.RED);
+					statusValLbl.setText(e1.getMessage() );
+					
 					e1.printStackTrace();
 				}
 			}
 		});
+		
 		btnLoadFileAnd.setBounds(376, 61, 187, 25);
 		frame.getContentPane().add(btnLoadFileAnd);
+		
+		btnChooseFile = new JButton("Choose File");
+		btnChooseFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooseDataFile = new JFileChooser();
+				if(chooseDataFile.showOpenDialog(frame)==JFileChooser.APPROVE_OPTION){
+					filepathTxt.setText(chooseDataFile.getSelectedFile().getPath());
+				}
+			}
+		});
+		btnChooseFile.setBounds(681, 34, 117, 25);
+		frame.getContentPane().add(btnChooseFile);
 	}
 }
