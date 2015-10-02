@@ -3,7 +3,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 
@@ -79,16 +82,23 @@ public class Driver {
 		String [][] dataset = fileToDataset("input.csv",100,103);
 		PrintStream out;
 		try {
-			double [] arr = {.70,.60,.50,.40,.30};
+			double [] arr = {.50};//{.70,.60,.50,.40,.30};
+			double minConfidence = .70;
 			for(double t : arr){
-				out = new PrintStream(new FileOutputStream("out"+((int)(t*100))+".txt"));
-				System.setOut(out);
+//				out = new PrintStream(new FileOutputStream("out_frequentItemSets_"+((int)(t*100))+".txt"));
+//				System.setOut(out);
 				long startTime = System.currentTimeMillis();
 				AssociationRuleMiner apriori = new AssociationRuleMiner(dataset,t);
-				MyUtils.println(apriori.mine().toString());
+				apriori.mine();
+				ArrayList<AssociationRule> filtered = apriori.getAsociationRules(.70); 
+				for(AssociationRule rule : filtered){
+					if( ((rule.body.contains("Gene1_UP") || rule.body.contains("Gene10_Down"))||
+							(rule.head.contains("Gene1_UP") || rule.head.contains("Gene10_Down"))))
+						MyUtils.println(rule+",");
+				}
 				long endTime   = System.currentTimeMillis();
-				long totalTime = endTime - startTime;
-				System.out.println("total time taken :"+totalTime);}
+				double totalTime = endTime - startTime;
+				System.out.println("total time taken :"+totalTime+"millis"+ "="+totalTime/1000+"sec="+totalTime/60000+"min");}
 
 		} catch (Exception e) {
 			e.printStackTrace();

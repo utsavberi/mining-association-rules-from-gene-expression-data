@@ -5,18 +5,51 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * AssociationRuleMiner generates the frequent item sets and association 
+ * rules from a dataset
+ * 
  * @author utsav
- *
  */
 
 public class AssociationRuleMiner {
-	String[][] dataset;
-	public int minSup;
-	public ArrayList<HashMap<HashSet<String>, Integer>> Ck; 
-	public ArrayList<HashMap<HashSet<String>, Integer>> Lk; 
-	public ArrayList<AssociationRule> associationRules ;
-	public ArrayList<HashMap<HashSet<String>, Integer>>  frequentItemSets;
-	public int totalRows;
+	private String[][] dataset;
+	private int minSup;
+	private ArrayList<HashMap<HashSet<String>, Integer>> Ck; 
+	private ArrayList<HashMap<HashSet<String>, Integer>> Lk; 
+	private int totalRows;
+	
+	private ArrayList<AssociationRule> associationRules ;
+	private ArrayList<HashMap<HashSet<String>, Integer>>  frequentItemSets;
+	
+	/**
+	 * @return an arrayList of the frequent candidate sets
+	 */
+	public  ArrayList<HashMap<HashSet<String>, Integer>> getFrequentItemSets(){
+		return frequentItemSets;
+	}
+	
+	/**
+	 * Get the association rules filtered by confidence
+	 * @param confidence the minimum confidence re4quired
+	 * @return an array list of associationList
+	 */
+	public ArrayList<AssociationRule> getAsociationRules(double confidence){
+		ArrayList<AssociationRule> filtered = new ArrayList<AssociationRule>();
+		for(AssociationRule rule: associationRules){
+			if(rule.confidence>=confidence){
+				filtered.add(rule);
+			}
+		}
+		return  filtered;
+	}
+	
+	/**
+	 * Get all the association rules
+	 * @return an array list of associationList
+	 */
+	public ArrayList<AssociationRule> getAsociationRules(){
+		return  associationRules;
+	}
 	
 	/**
 	 * @param dataset an n x n matrix with each cell containing an item. Do not include headers or row ids 
@@ -30,6 +63,7 @@ public class AssociationRuleMiner {
 		this.minSup = (int) (Math.ceil(minSup*totalRows));
 	}
 	
+		
 	/**
 	 * Mines association rules by first computing the frequentItemSets
 	 * and then generating the rules
@@ -43,6 +77,7 @@ public class AssociationRuleMiner {
 	}
 
 	/**
+	 * Generate frequent item sets by iteratively computing the candidate sets
 	 * @return Array List of the frequent item set generated from the dataset
 	 */
 	public ArrayList<HashMap<HashSet<String>, Integer>> generateFrequentItemSet(){
@@ -51,20 +86,21 @@ public class AssociationRuleMiner {
 		HashMap<HashSet<String>, Integer> l = generateL(c);
 		Ck.add(c);
 		Lk.add(l);
-		MyUtils.printHashMap(l);
+//		MyUtils.printHashMap(l);
 		int i = 2;
 		while(l.size()>0){
 			c = generateC(l);
 			l = generateL(c);
-			MyUtils.println("printing l"+i++);
+//			MyUtils.println("printing l"+i++);
 			Ck.add(c);
 			Lk.add(l);
-			MyUtils.printHashMap(l);
+//			MyUtils.printHashMap(l);
 		}
 		return Lk;
 	}
 	
 	/**
+	 * Generates the association rule based on the frequent item sets
 	 * @param frequentItemSets
 	 * @return an array list of AssociationRules
 	 */
