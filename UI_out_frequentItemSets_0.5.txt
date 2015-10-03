@@ -189,4 +189,3 @@
 [Gene1_UP, Gene72_UP] -> [Gene72_UP] ( confidence : 0.7536231884057971 | support : 0.52 )
 [Gene1_UP, Gene72_UP] -> [Gene1_UP] ( confidence : 0.7027027027027027 | support : 0.52 )
 [Gene1_UP, Gene59_UP] -> [Gene59_UP] ( confidence : 0.7681159420289855 | support : 0.53 )
-[Gene1_UP, Gene59_UP] -> [Gene1_UP] ( confidence : 0.6973684210526315 | support : 0.53 )
