@@ -42,6 +42,7 @@ import parser.AssociationRuleParser;
 import ruleMiner.AssociationRule;
 import ruleMiner.AssociationRuleMiner;
 import ruleMiner.MyUtils;
+import javax.swing.border.EtchedBorder;
 
 
 public class AprioriRunner {
@@ -121,6 +122,7 @@ public class AprioriRunner {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 810, 506);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -158,7 +160,7 @@ public class AprioriRunner {
 		frame.getContentPane().add(lblStatus);
 		
 		 statusValLbl = new JLabel("ready");
-		statusValLbl.setForeground(Color.GREEN);
+		statusValLbl.setForeground(new Color(0, 204, 0));
 		statusValLbl.setBounds(104, 12, 638, 15);
 		frame.getContentPane().add(statusValLbl);
 		
@@ -186,6 +188,12 @@ public class AprioriRunner {
 		rulePane.add(lblEnterRuleTemplate, gbc_lblEnterRuleTemplate);
 		
 		searchRuleTxt = new JTextField();
+		searchRuleTxt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				runRule();
+
+			}
+		});
 		GridBagConstraints gbc_searchRuleTxt = new GridBagConstraints();
 		gbc_searchRuleTxt.gridwidth = 2;
 		gbc_searchRuleTxt.fill = GridBagConstraints.HORIZONTAL;
@@ -218,6 +226,9 @@ public class AprioriRunner {
 		rulePane.add(scrollPane, gbc_scrollPane);
 		
 		outList = new JList<AssociationRule>();
+		outList.setForeground(new Color(0, 0, 0));
+		outList.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		outList.setBackground(new Color(102, 153, 204));
 		scrollPane.setViewportView(outList);
 		outList.setValueIsAdjusting(true);
 		
@@ -298,7 +309,8 @@ public class AprioriRunner {
 					
 					outList.setModel(model);
 					rulePane.show();
-					statusValLbl.setForeground(Color.GREEN);
+					
+					statusValLbl.setForeground(new Color(0,204,0));
 					statusValLbl.setText("Total :"+i+" candidates. Output stored to "+outFile );
 					
 				} catch (FileNotFoundException e1) {
@@ -352,6 +364,10 @@ public class AprioriRunner {
 		}
 		
 		outList.setModel(model);
+
+		statusValLbl.setForeground(Color.BLUE);
+		statusValLbl.setText("Total :"+model.getSize()+" rules." );
+		
 //		System.out.println(outputAssciationRules.toString());
 	}
 }
