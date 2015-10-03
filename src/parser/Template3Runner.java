@@ -11,8 +11,12 @@ import ruleMiner.AssociationRule;
  */
 public class Template3Runner implements TemplateRunner{
 
-	/* (non-Javadoc)
-	 * @see TemplateRunner#ruleMatchesTemplate(java.lang.String, java.lang.String)
+	/**
+	 * runs the rule against template 3:Any combined templates using AND or OR
+
+	 * @param inputQuery the given template
+	 * @param associationRule generated through aprori
+	 * @returns true if rule complies to template 3 
 	 */
 	@Override
 	public boolean ruleMatchesTemplate(String inputQuery, AssociationRule associationRule) {
@@ -25,29 +29,24 @@ public class Template3Runner implements TemplateRunner{
 			String[] templates = inputQuery.split("AND");
 			for(String template: templates)
 			{
-				System.out.println("Template "+ template.trim());
-				
 				stack.push (associationRuleParser.runParser(template.trim(), associationRule));
-			
 			}
-			
-				 if(stack.pop() && stack.pop())
-					 ruleCompliesWithTemplate = true; 
+			if(stack.pop() && stack.pop())
+			  ruleCompliesWithTemplate = true; 
 				
 		}
 		else
 			if(inputQuery.contains(Constants.OR))
-			{
+			  {
 				String[] templates = inputQuery.split("OR");
 				for(String template: templates)
-				{
+				  {
 					stack.push (associationRuleParser.runParser(template.trim(), associationRule));
+			      }
 				
-				}
-				
-					 if(stack.pop() || stack.pop())
-						 ruleCompliesWithTemplate = true; 
-			}
+				  if(stack.pop() || stack.pop())
+					ruleCompliesWithTemplate = true; 
+			  }
 		return ruleCompliesWithTemplate;
 	}
 

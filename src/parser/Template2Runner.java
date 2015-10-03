@@ -10,6 +10,13 @@ import ruleMiner.AssociationRule;
  */
 public class Template2Runner implements TemplateRunner{
 
+	/**
+	 * runs the rule against template 2: SizeOf({BODY|HEAD|RULE}) ≥ NUMBER
+
+	 * @param inputQuery the given template
+	 * @param associationRule generated through aprori
+	 * @returns true if rule complies to template 2 
+	 */
 	@Override
 	public boolean ruleMatchesTemplate(String inputQuery, AssociationRule associationRule) {
 		// TODO Auto-generated method stub
@@ -19,30 +26,29 @@ public class Template2Runner implements TemplateRunner{
 	    boolean rulecompliesToTemplate = false;
 	    int thresholdValue = Integer.parseInt(inputQuery.split(">=")[1].toString().trim());
 	    if(inputQuery.contains(Constants.BODY))
-	    {
+	      {
 	    	sizeOfRulePart = getSize(body);
-	    }
+	      }
 	    else
-	    	if(inputQuery.contains(Constants.HEAD))
-	    	{
+	    if(inputQuery.contains(Constants.HEAD))
+	      {
 	    		sizeOfRulePart = getSize(head);
-	    	}
-	    	else
-	    		if(inputQuery.contains(Constants.RULE))
-	    		{
-	    			sizeOfRulePart = getSize(head) + getSize(body);
-	    		}
+	      }
+	    else
+	    if(inputQuery.contains(Constants.RULE))
+	      {
+	    	sizeOfRulePart = getSize(head) + getSize(body);
+	      }
 	    if(sizeOfRulePart >= thresholdValue)
-	    {
-	    	//System.out.println(associationRule);
+	      {
 	    	rulecompliesToTemplate = true;	    
-	    }
-	    	return rulecompliesToTemplate;
+	      }
+	    return rulecompliesToTemplate;
 	}
 
-	private int getSize(HashSet body) {
-		// TODO Auto-generated method stub
-	return body.size();	
+	private int getSize(HashSet body) 
+	{
+	  return body.size();	
 	}
 
 }
