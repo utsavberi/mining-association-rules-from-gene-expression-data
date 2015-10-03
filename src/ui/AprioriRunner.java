@@ -43,6 +43,8 @@ import ruleMiner.AssociationRule;
 import ruleMiner.AssociationRuleMiner;
 import ruleMiner.MyUtils;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 
 public class AprioriRunner {
@@ -119,16 +121,25 @@ public class AprioriRunner {
 	private JList<AssociationRule> outList;
 	String [] testCases = {"RULE HAS ANY of (Gene1_UP)",
 			"RULE HAS NONE of (Gene1_UP)",
-			"RULE HAS 1 of (Gene1_UP, Gene10_DOWN)",
+			"RULE HAS 1 of (Gene1_UP, Gene10_Down)",
 			"BODY HAS ANY of (Gene1_UP)",
 			"BODY HAS NONE of (Gene1_UP)",
 			"BODY HAS 1 of (Gene1_UP, Gene10_Down)",
 			"HEAD HAS ANY of (Gene1_UP)",
 			"HEAD HAS NONE of (Gene1_UP)",
-			"HEAD HAS 1 of (Gene1_UP, Gene10_DOWN)",
-			"SizeOf(RULE) >= 2"
+			"HEAD HAS 1 of (Gene1_UP, Gene10_Down)",
+			"SizeOf(RULE) >= 2",
+			"SizeOf(BODY) >= 2",
+			"SizeOf(HEAD) >= 2",
+			"BODY HAS ANY of (Gene1_UP) OR HEAD HAS 1 of (Gene59_UP)",
+			"BODY HAS ANY of (Gene1_UP) AND HEAD HAS 1 of (Gene59_UP)",
+			"BODY HAS ANY of (Gene1_UP)  OR SizeOf(HEAD) >=2",
+			"BODY HAS ANY of (Gene1_UP) AND SizeOf(HEAD) >=2",
+			"SizeOf(BODY) >=1 OR SizeOf(HEAD) >= 2",
+			"SizeOf(BODY) >=1 AND SizeOf(HEAD) >= 2"
 			};
 	private JSpinner confidenceSpinner;
+	private JComboBox comboBox;
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -185,9 +196,9 @@ public class AprioriRunner {
 		rulePane.setBounds(12, 95, 837, 371);
 		frame.getContentPane().add(rulePane);
 		GridBagLayout gbl_rulePane = new GridBagLayout();
-		gbl_rulePane.columnWidths = new int[]{0, 264, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 202, 0};
+		gbl_rulePane.columnWidths = new int[]{0, 138, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 202, 181, 87, 0};
 		gbl_rulePane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_rulePane.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_rulePane.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_rulePane.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		rulePane.setLayout(gbl_rulePane);
 		rulePane.hide();
@@ -200,166 +211,7 @@ public class AprioriRunner {
 		gbc_lblTestCases.gridy = 0;
 		rulePane.add(lblTestCases, gbc_lblTestCases);
 		
-		JButton btn1 = new JButton("1");
-		btn1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[0]);
-				runRule();
-				
-			}
-		});
-		
-		
-		
-		GridBagConstraints gbc_btn1 = new GridBagConstraints();
-		gbc_btn1.insets = new Insets(0, 0, 5, 5);
-		gbc_btn1.gridx = 2;
-		gbc_btn1.gridy = 0;
-		rulePane.add(btn1, gbc_btn1);
-		
-		JButton button_2 = new JButton("2");
-		GridBagConstraints gbc_button_2 = new GridBagConstraints();
-		gbc_button_2.insets = new Insets(0, 0, 5, 5);
-		gbc_button_2.gridx = 3;
-		gbc_button_2.gridy = 0;
-		rulePane.add(button_2, gbc_button_2);
-		
-		JButton button_3 = new JButton("3");
-		GridBagConstraints gbc_button_3 = new GridBagConstraints();
-		gbc_button_3.insets = new Insets(0, 0, 5, 5);
-		gbc_button_3.gridx = 4;
-		gbc_button_3.gridy = 0;
-		rulePane.add(button_3, gbc_button_3);
-		
-		JButton button_4 = new JButton("4");
-		GridBagConstraints gbc_button_4 = new GridBagConstraints();
-		gbc_button_4.insets = new Insets(0, 0, 5, 5);
-		gbc_button_4.gridx = 5;
-		gbc_button_4.gridy = 0;
-		rulePane.add(button_4, gbc_button_4);
-		
-		JButton button_5 = new JButton("5");
-		GridBagConstraints gbc_button_5 = new GridBagConstraints();
-		gbc_button_5.insets = new Insets(0, 0, 5, 5);
-		gbc_button_5.gridx = 6;
-		gbc_button_5.gridy = 0;
-		rulePane.add(button_5, gbc_button_5);
-		
-		JButton button_6 = new JButton("6");
-		GridBagConstraints gbc_button_6 = new GridBagConstraints();
-		gbc_button_6.insets = new Insets(0, 0, 5, 5);
-		gbc_button_6.gridx = 7;
-		gbc_button_6.gridy = 0;
-		rulePane.add(button_6, gbc_button_6);
-		
-		JButton button_7 = new JButton("7");
-		GridBagConstraints gbc_button_7 = new GridBagConstraints();
-		gbc_button_7.insets = new Insets(0, 0, 5, 5);
-		gbc_button_7.gridx = 8;
-		gbc_button_7.gridy = 0;
-		rulePane.add(button_7, gbc_button_7);
-		
-		JButton button_8 = new JButton("8");
-		GridBagConstraints gbc_button_8 = new GridBagConstraints();
-		gbc_button_8.insets = new Insets(0, 0, 5, 5);
-		gbc_button_8.gridx = 9;
-		gbc_button_8.gridy = 0;
-		rulePane.add(button_8, gbc_button_8);
-		
-		JButton button_9 = new JButton("9");
-		GridBagConstraints gbc_button_9 = new GridBagConstraints();
-		gbc_button_9.insets = new Insets(0, 0, 5, 5);
-		gbc_button_9.gridx = 10;
-		gbc_button_9.gridy = 0;
-		rulePane.add(button_9, gbc_button_9);
-		
-		JButton button_10 = new JButton("10");
-		GridBagConstraints gbc_button_10 = new GridBagConstraints();
-		gbc_button_10.insets = new Insets(0, 0, 5, 5);
-		gbc_button_10.gridx = 11;
-		gbc_button_10.gridy = 0;
-		rulePane.add(button_10, gbc_button_10);
-		
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[1]);
-				runRule();
-				
-			}
-		});
-		
-		button_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[2]);
-				runRule();
-				
-			}
-		});
-		
-		button_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[3]);
-				runRule();
-				
-			}
-		});
-		
-		button_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[4]);
-				runRule();
-				
-			}
-		});
-		
-		button_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[5]);
-				runRule();
-				
-			}
-		});
-		
-		button_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[6]);
-				runRule();
-				
-			}
-		});
-		
-		button_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[0]);
-				runRule();
-				
-			}
-		});
-		
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[7]);
-				runRule();
-				
-			}
-		});
-		
-		button_9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[8]);
-				runRule();
-				
-			}
-		});
-		
-		button_10.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchRuleTxt.setText(testCases[9]);
-				runRule();
-				
-			}
-		});
-		
+	
 		
 		
 		
@@ -378,6 +230,24 @@ public class AprioriRunner {
 			}
 		});
 		
+		comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+				searchRuleTxt.setText(testCases[comboBox.getSelectedIndex()-1]);
+				runRule();}
+				catch(Exception ex){}
+			}
+		});
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Select Test Case..", "Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4", "Test Case 5", "Test Case 6", "Test Case 7", "Test Case 8", "Test Case 9", "Test Case 10", "Test Case 11", "Test Case 12", "Test Case 13", "Test Case 14", "Test Case 15", "Test Case 16", "Test Case 17", "Test Case 18"}));
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 10;
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 2;
+		gbc_comboBox.gridy = 0;
+		rulePane.add(comboBox, gbc_comboBox);
+		
 		lblEnterRuleTemplate = new JLabel("Enter Rule Template");
 		GridBagConstraints gbc_lblEnterRuleTemplate = new GridBagConstraints();
 		gbc_lblEnterRuleTemplate.anchor = GridBagConstraints.WEST;
@@ -387,7 +257,7 @@ public class AprioriRunner {
 		rulePane.add(lblEnterRuleTemplate, gbc_lblEnterRuleTemplate);
 		
 		GridBagConstraints gbc_searchRuleTxt = new GridBagConstraints();
-		gbc_searchRuleTxt.gridwidth = 10;
+		gbc_searchRuleTxt.gridwidth = 13;
 		gbc_searchRuleTxt.fill = GridBagConstraints.HORIZONTAL;
 		gbc_searchRuleTxt.insets = new Insets(0, 0, 5, 5);
 		gbc_searchRuleTxt.gridx = 2;
@@ -396,16 +266,16 @@ public class AprioriRunner {
 		searchRuleTxt.setColumns(10);
 		GridBagConstraints gbc_btnGo = new GridBagConstraints();
 		gbc_btnGo.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnGo.insets = new Insets(0, 0, 5, 0);
-		gbc_btnGo.gridx = 13;
+		gbc_btnGo.insets = new Insets(0, 0, 5, 5);
+		gbc_btnGo.gridx = 15;
 		gbc_btnGo.gridy = 1;
 		rulePane.add(btnGo, gbc_btnGo);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridheight = 6;
-		gbc_scrollPane.gridwidth = 13;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.gridwidth = 15;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 2;
@@ -441,8 +311,9 @@ public class AprioriRunner {
 			}
 		});
 		GridBagConstraints gbc_btnSaveToFile = new GridBagConstraints();
+		gbc_btnSaveToFile.insets = new Insets(0, 0, 0, 5);
 		gbc_btnSaveToFile.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSaveToFile.gridx = 13;
+		gbc_btnSaveToFile.gridx = 15;
 		gbc_btnSaveToFile.gridy = 8;
 		rulePane.add(btnSaveToFile, gbc_btnSaveToFile);
 		
